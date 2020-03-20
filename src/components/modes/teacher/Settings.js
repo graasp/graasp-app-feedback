@@ -23,14 +23,14 @@ function getModalStyle() {
 const styles = theme => ({
   paper: {
     position: 'absolute',
-    width: theme.spacing.unit * 50,
+    width: theme.spacing(50),
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing(4),
     outline: 'none',
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
 });
 
@@ -43,6 +43,7 @@ class Settings extends Component {
     activity: PropTypes.bool.isRequired,
     settings: PropTypes.shape({
       headerVisible: PropTypes.bool.isRequired,
+      lang: PropTypes.string.isRequired,
     }).isRequired,
     t: PropTypes.func.isRequired,
     dispatchCloseSettings: PropTypes.func.isRequired,
@@ -96,12 +97,10 @@ class Settings extends Component {
     );
 
     return (
-      <>
-        <FormControlLabel
-          control={switchControl}
-          label={t('Show Header to Students')}
-        />
-      </>
+      <FormControlLabel
+        control={switchControl}
+        label={t('Show Header to Students')}
+      />
     );
   }
 
@@ -135,7 +134,7 @@ const mapStateToProps = ({ layout, appInstance }) => {
       // by default this is true
       headerVisible: appInstance.content.settings.headerVisible,
     },
-    activity: Boolean(appInstance.activity.length),
+    activity: appInstance.activity.length,
   };
 };
 

@@ -1,12 +1,10 @@
 {
-  "name": "graasp-app-starter-react",
-  "version": "0.5.2",
+  "name": "graasp-app-feedback",
+  "version": "0.1.0",
   "private": true,
   "author": "React EPFL",
   "contributors": [
-    "Juan Carlos Farah",
-    "Hassan Abdul Ghaffar",
-    "Mashkour Abdel Aziz"
+    "Juan Carlos Farah"
   ],
   "homepage": ".",
   "license": "MIT",

@@ -1,1 +1,2 @@
-// here you define the types of app instance resources you have
+export const INPUT = 'input';
+export const FEEDBACK = 'feedback';

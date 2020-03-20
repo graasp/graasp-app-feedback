@@ -50,7 +50,7 @@ class TeacherMode extends Component {
 }
 const mapStateToProps = ({ context, appInstanceResources }) => ({
   appInstanceId: context.appInstanceId,
-  activity: Boolean(appInstanceResources.activity.length),
+  activity: appInstanceResources.activity.length,
 });
 
 const mapDispatchToProps = {

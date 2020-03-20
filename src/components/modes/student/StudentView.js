@@ -3,47 +3,48 @@ import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import { addQueryParamsToUrl } from '../../../utils/url';
+import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
   main: {
     textAlign: 'center',
     margin: theme.spacing.unit,
   },
-  message: {
-    padding: theme.spacing.unit,
-    backgroundColor: theme.status.danger.background[500],
-    color: theme.status.danger.color,
-    marginBottom: theme.spacing.unit * 2,
-  },
 });
 
-export const StudentView = ({ t, classes }) => (
-  <Grid container spacing={24}>
-    <Grid item xs={12} className={classes.main}>
-      <Paper className={classes.message}>
-        {t(
-          'This is the student view. Switch to the teacher view by clicking on the URL below.',
-        )}
-        <a href={addQueryParamsToUrl({ mode: 'teacher' })}>
-          <pre>
-            {`${window.location.host}/${addQueryParamsToUrl({
-              mode: 'teacher',
-            })}`}
-          </pre>
-        </a>
-      </Paper>
+export const StudentView = ({ t, classes, feedback }) => {
+  if (!feedback) {
+    return null;
+  }
+
+  return (
+    <Grid container spacing={24}>
+      <Grid item xs={12} className={classes.main}>
+        <TextField
+          key="feedback"
+          label={t('Feedback')}
+          multiline
+          value={feedback}
+          margin="normal"
+          disabled
+          variant="outlined"
+          fullWidth
+        />
+      </Grid>
     </Grid>
-  </Grid>
-);
+  );
+};
 
 StudentView.propTypes = {
   t: PropTypes.func.isRequired,
   classes: PropTypes.shape({
     main: PropTypes.string,
-    message: PropTypes.string,
   }).isRequired,
+  feedback: PropTypes.string,
+};
+
+StudentView.defaultProps = {
+  feedback: '',
 };
 
 const StyledComponent = withStyles(styles)(StudentView);
