@@ -29,14 +29,16 @@ const getContext = () => dispatch => {
       spaceId = null,
       subSpaceId = null,
       userId = null,
-      revieweeId = null,
+      reviewerId = null,
       sessionId = null,
+      reviewing = 'false',
       offline = 'false',
       dev = 'false',
     } = Qs.parse(window.location.search, { ignoreQueryPrefix: true });
 
     const offlineBool = offline === 'true';
     const devBool = dev === 'true';
+    const reviewingBool = reviewing === 'true';
 
     const standalone = !devBool && !isInFrame();
 
@@ -51,8 +53,9 @@ const getContext = () => dispatch => {
       spaceId,
       subSpaceId,
       parentSpaceId,
-      revieweeId,
+      reviewerId,
       standalone,
+      reviewing: reviewingBool,
       offline: offlineBool,
       dev: devBool,
     };

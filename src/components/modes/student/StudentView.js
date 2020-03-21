@@ -178,13 +178,13 @@ StudentView.defaultProps = {
 };
 
 const mapStateToProps = ({ context, appInstanceResources }) => {
-  const { revieweeId, userId } = context;
+  const { reviewing, userId } = context;
 
   // default to reviewee id as this takes precedence over user id
-  const effectiveUserId = revieweeId || userId;
+  const effectiveUserId = userId;
   return {
     effectiveUserId,
-    reviewMode: Boolean(revieweeId),
+    reviewMode: Boolean(reviewing),
     feedbackResource: appInstanceResources.content.find(({ user, type }) => {
       return user === effectiveUserId && type === FEEDBACK;
     }),

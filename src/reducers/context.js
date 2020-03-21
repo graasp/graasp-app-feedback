@@ -18,7 +18,8 @@ const INITIAL_STATE = {
   subSpaceId: null,
   parentSpaceId: null,
   userId: null,
-  revieweeId: null,
+  reviewerId: null,
+  reviewing: false,
   offline: false,
 };
 
