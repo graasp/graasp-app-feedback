@@ -3,13 +3,18 @@ import React, { Component } from 'react';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import {
+  Launch as LaunchIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  PanTool as PanToolIcon,
+} from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '@material-ui/core/Input';
+import { Tooltip, withStyles } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ConfirmDialog from '../../common/ConfirmDialog';
 import {
@@ -17,9 +22,15 @@ import {
   patchAppInstanceResource,
   postAppInstanceResource,
 } from '../../../actions';
-import { FEEDBACK } from '../../../config/appInstanceResourceTypes';
+import { FEEDBACK, REQUEST } from '../../../config/appInstanceResourceTypes';
 import FormDialog from '../../common/FormDialog';
 import { showErrorToast } from '../../../utils/toasts';
+
+const styles = theme => ({
+  inlineIcon: {
+    marginLeft: theme.spacing(2),
+  },
+});
 
 class Response extends Component {
   state = {
@@ -30,6 +41,9 @@ class Response extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     activity: PropTypes.bool.isRequired,
+    parentSpaceId: PropTypes.string.isRequired,
+    spaceId: PropTypes.string.isRequired,
+    lang: PropTypes.string.isRequired,
     dispatchDeleteAppInstanceResource: PropTypes.func.isRequired,
     dispatchPostAppInstanceResource: PropTypes.func.isRequired,
     dispatchPatchAppInstanceResource: PropTypes.func.isRequired,
@@ -41,10 +55,18 @@ class Response extends Component {
       _id: PropTypes.string.isRequired,
       data: PropTypes.string,
     }),
+    classes: PropTypes.shape({
+      inlineIcon: PropTypes.string,
+    }).isRequired,
+    requestResource: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      data: PropTypes.string,
+    }),
   };
 
   static defaultProps = {
     feedbackResource: {},
+    requestResource: {},
   };
 
   handleToggleConfirmDialog = open => () => {
@@ -150,17 +172,51 @@ class Response extends Component {
   }
 
   render() {
-    const { t, student, activity, feedbackResource } = this.props;
+    const {
+      t,
+      student,
+      classes,
+      activity,
+      feedbackResource,
+      parentSpaceId,
+      spaceId,
+      lang,
+      requestResource,
+    } = this.props;
+    const { data: feedbackRequested } = requestResource;
 
-    const { id } = student;
+    const { id, name } = student;
 
     const { confirmDialogOpen } = this.state;
 
+    const reviewUrl = `https://viewer.graasp.eu/${lang}/pages/${parentSpaceId}/subpages/${spaceId}?revieweeId=${id}`;
+
+    const nameCell = feedbackRequested ? (
+      <div>
+        {name}
+        <Tooltip title={t('Feedback Requested')}>
+          <IconButton
+            color="primary"
+            href={reviewUrl}
+            target="_blank"
+            className={classes.inlineIcon}
+          >
+            <PanToolIcon size="small" />
+          </IconButton>
+        </Tooltip>
+      </div>
+    ) : (
+      name
+    );
+
     return (
       <TableRow key={id}>
-        <TableCell>{activity ? <CircularProgress /> : student.name}</TableCell>
+        <TableCell>{activity ? <CircularProgress /> : nameCell}</TableCell>
         <TableCell>{this.renderFeedbackCell()}</TableCell>
-        <TableCell>
+        <TableCell align="center">
+          <IconButton color="primary" href={reviewUrl} target="_blank">
+            <LaunchIcon />
+          </IconButton>
           <IconButton
             color="primary"
             onClick={this.handleToggleConfirmDialog(true)}
@@ -185,18 +241,28 @@ class Response extends Component {
   }
 }
 
-const mapStateToProps = ({ appInstanceResources, users }, ownProps) => {
+const mapStateToProps = (
+  { appInstanceResources, users, context },
+  ownProps,
+) => {
   const {
     student: { id },
   } = ownProps;
+  const { parentSpaceId, spaceId, lang } = context;
   const feedbackResource = appInstanceResources.content.find(
     ({ user, type }) => {
       return user === id && type === FEEDBACK;
     },
   );
   return {
+    lang,
     feedbackResource,
+    parentSpaceId,
+    spaceId,
     activity: users.activity.length,
+    requestResource: appInstanceResources.content.find(({ user, type }) => {
+      return user === id && type === REQUEST;
+    }),
   };
 };
 
@@ -215,4 +281,4 @@ const ConnectedComponent = connect(
 
 const TranslatedComponent = withTranslation()(ConnectedComponent);
 
-export default TranslatedComponent;
+export default withStyles(styles)(TranslatedComponent);

@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Fab from '@material-ui/core/Fab';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { Settings as SettingsIcon } from '@material-ui/icons';
 import {
   patchAppInstanceResource,
   postAppInstanceResource,
@@ -54,6 +54,7 @@ export class TeacherView extends Component {
     root: {
       width: '100%',
       marginTop: theme.spacing(3),
+      paddingBottom: theme.spacing(10),
     },
     main: {
       textAlign: 'center',

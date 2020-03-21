@@ -5,7 +5,6 @@ import StudentView from './StudentView';
 import { DEFAULT_VIEW, FEEDBACK_VIEW } from '../../../config/views';
 import { getAppInstanceResources } from '../../../actions';
 import Loader from '../../common/Loader';
-import { FEEDBACK } from '../../../config/appInstanceResourceTypes';
 
 class StudentMode extends Component {
   static propTypes = {
@@ -14,10 +13,6 @@ class StudentMode extends Component {
     activity: PropTypes.number,
     dispatchGetAppInstanceResources: PropTypes.func.isRequired,
     userId: PropTypes.string,
-    feedbackResource: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      data: PropTypes.string,
-    }),
   };
 
   static defaultProps = {
@@ -25,7 +20,6 @@ class StudentMode extends Component {
     appInstanceId: null,
     activity: 0,
     userId: null,
-    feedbackResource: {},
   };
 
   constructor(props) {
@@ -49,8 +43,8 @@ class StudentMode extends Component {
   }
 
   render() {
-    const { view, activity, feedbackResource } = this.props;
-    const { data: feedback } = feedbackResource;
+    const { view, activity } = this.props;
+
     if (activity) {
       return <Loader />;
     }
@@ -58,7 +52,7 @@ class StudentMode extends Component {
       case FEEDBACK_VIEW:
       case DEFAULT_VIEW:
       default:
-        return <StudentView feedback={feedback} />;
+        return <StudentView />;
     }
   }
 }
@@ -68,9 +62,6 @@ const mapStateToProps = ({ context, appInstanceResources }) => {
     userId,
     appInstanceId,
     activity: appInstanceResources.activity.length,
-    feedbackResource: appInstanceResources.content.find(({ user, type }) => {
-      return user === userId && type === FEEDBACK;
-    }),
   };
 };
 

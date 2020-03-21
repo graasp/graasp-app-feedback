@@ -16,7 +16,9 @@ const INITIAL_STATE = {
   appInstanceId: null,
   spaceId: null,
   subSpaceId: null,
+  parentSpaceId: null,
   userId: null,
+  revieweeId: null,
   offline: false,
 };
 
