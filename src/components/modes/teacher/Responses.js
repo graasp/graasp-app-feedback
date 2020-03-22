@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableHead from '@material-ui/core/TableHead';
@@ -12,6 +13,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Response from './Response';
 import { LIGHT_USER_TYPE } from '../../../config/userTypes';
+import { patchAppInstance } from '../../../actions';
 
 class Responses extends Component {
   static styles = theme => ({
@@ -27,6 +29,7 @@ class Responses extends Component {
 
   static propTypes = {
     t: PropTypes.func.isRequired,
+    dispatchPatchAppInstance: PropTypes.func.isRequired,
     students: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string,
@@ -37,23 +40,40 @@ class Responses extends Component {
       root: PropTypes.string,
       table: PropTypes.string,
     }).isRequired,
+    settings: PropTypes.shape({
+      headerVisible: PropTypes.bool.isRequired,
+      studentsOnly: PropTypes.bool.isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
     students: [],
   };
 
-  state = {
-    studentsOnly: false,
+  saveSettings = settingsToChange => {
+    const { settings, dispatchPatchAppInstance } = this.props;
+    const newSettings = {
+      ...settings,
+      ...settingsToChange,
+    };
+    dispatchPatchAppInstance({
+      data: newSettings,
+    });
   };
 
   handleChangeStudentFilter = ({ target: { checked } }) => {
-    this.setState({ studentsOnly: checked });
+    const settingsToChange = {
+      studentsOnly: checked,
+    };
+    this.saveSettings(settingsToChange);
   };
 
   renderStudents() {
-    const { t, students } = this.props;
-    const { studentsOnly } = this.state;
+    const {
+      t,
+      students,
+      settings: { studentsOnly },
+    } = this.props;
 
     // if there are no resources, show an empty table
     if (!students.length) {
@@ -74,7 +94,7 @@ class Responses extends Component {
       );
     }
 
-    // map each app instance resource to a row in the table
+    // map each student to a row in the table
     return filteredStudents.map(student => {
       const { id } = student;
       return <Response key={id} student={student} />;
@@ -87,8 +107,8 @@ class Responses extends Component {
       classes,
       // this property allows us to do translations and is injected by i18next
       t,
+      settings: { studentsOnly },
     } = this.props;
-    const { studentsOnly } = this.state;
 
     const switchComponent = (
       <Switch
@@ -124,6 +144,21 @@ class Responses extends Component {
   }
 }
 
+const mapStateToProps = ({ appInstance }) => {
+  return {
+    settings: appInstance.content.settings,
+  };
+};
+
+const mapDispatchToProps = {
+  dispatchPatchAppInstance: patchAppInstance,
+};
+
 const StyledComponent = withStyles(Responses.styles)(Responses);
 
-export default withTranslation()(StyledComponent);
+const TranslatedComponent = withTranslation()(StyledComponent);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TranslatedComponent);
