@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/graasp/graasp-app-feedback/compare/v0.1.1...v0.1.2) (2020-03-22)
+
+### Bug Fixes
+
+- fix warnings related to types ([3b5217c](https://github.com/graasp/graasp-app-feedback/commit/3b5217c44a1f9dcf728930a4f5077ab35d7eae85))
+
 ### [0.1.1](https://github.com/graasp/graasp-app-feedback/compare/v0.1.0...v0.1.1) (2020-03-22)
 
 ### Features
