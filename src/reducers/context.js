@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   reviewerId: null,
   reviewing: false,
   offline: false,
+  standalone: false,
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {

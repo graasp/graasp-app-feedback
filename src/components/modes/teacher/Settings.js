@@ -43,7 +43,6 @@ class Settings extends Component {
     activity: PropTypes.bool.isRequired,
     settings: PropTypes.shape({
       headerVisible: PropTypes.bool.isRequired,
-      lang: PropTypes.string.isRequired,
     }).isRequired,
     t: PropTypes.func.isRequired,
     dispatchCloseSettings: PropTypes.func.isRequired,
@@ -134,7 +133,7 @@ const mapStateToProps = ({ layout, appInstance }) => {
       // by default this is true
       headerVisible: appInstance.content.settings.headerVisible,
     },
-    activity: appInstance.activity.length,
+    activity: Boolean(appInstance.activity.length),
   };
 };
 

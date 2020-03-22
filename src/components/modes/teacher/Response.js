@@ -41,7 +41,7 @@ class Response extends Component {
   static propTypes = {
     t: PropTypes.func.isRequired,
     activity: PropTypes.bool.isRequired,
-    parentSpaceId: PropTypes.string.isRequired,
+    parentSpaceId: PropTypes.string,
     spaceId: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     dispatchDeleteAppInstanceResource: PropTypes.func.isRequired,
@@ -52,14 +52,14 @@ class Response extends Component {
       name: PropTypes.string.isRequired,
     }).isRequired,
     feedbackResource: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      _id: PropTypes.string,
       data: PropTypes.string,
     }),
     classes: PropTypes.shape({
       inlineIcon: PropTypes.string,
     }).isRequired,
     requestResource: PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      _id: PropTypes.string,
       data: PropTypes.string,
     }),
   };
@@ -67,6 +67,7 @@ class Response extends Component {
   static defaultProps = {
     feedbackResource: {},
     requestResource: {},
+    parentSpaceId: null,
   };
 
   handleToggleConfirmDialog = open => () => {
@@ -259,7 +260,7 @@ const mapStateToProps = (
     feedbackResource,
     parentSpaceId,
     spaceId,
-    activity: users.activity.length,
+    activity: Boolean(users.activity.length),
     requestResource: appInstanceResources.content.find(({ user, type }) => {
       return user === id && type === REQUEST;
     }),

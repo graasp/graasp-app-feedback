@@ -25,7 +25,7 @@ import {
 const styles = theme => ({
   main: {
     textAlign: 'center',
-    margin: theme.spacing.unit,
+    margin: theme.spacing(),
   },
 });
 
