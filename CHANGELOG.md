@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/graasp/graasp-app-feedback/compare/v0.1.2...v0.1.3) (2020-03-23)
+
+### Bug Fixes
+
+- fix bug with setting header visibility ([eaa01d1](https://github.com/graasp/graasp-app-feedback/commit/eaa01d184c2ccfff1a5b3802a5bb66d99008d522))
+
 ### [0.1.2](https://github.com/graasp/graasp-app-feedback/compare/v0.1.1...v0.1.2) (2020-03-22)
 
 ### Bug Fixes
